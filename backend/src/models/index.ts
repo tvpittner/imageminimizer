@@ -3,16 +3,17 @@ import { ServiceModel } from './Service';
 import { ProcessedImageModel } from './ProcessedImage';
 import { BulkDownloadJobModel } from './BulkDownloadJob';
 import { UserModel } from './User';
+import { config } from '../utils/config';
 
-const sequelize = new Sequelize(process.env.DATABASE_URL!, {
+const sequelize = new Sequelize(config.database.url, {
   dialect: 'postgres',
   dialectOptions: {
-    ssl: process.env.NODE_ENV === 'production' ? {
+    ssl: config.nodeEnv === 'production' ? {
       require: true,
       rejectUnauthorized: false
     } : false
   },
-  logging: process.env.NODE_ENV === 'development' ? console.log : false,
+  logging: config.nodeEnv === 'development' ? console.log : false,
 });
 
 // Initialize models

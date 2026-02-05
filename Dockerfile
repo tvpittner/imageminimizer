@@ -1,55 +1,40 @@
-# Build stage
-FROM node:18-alpine AS builder
+# Use Node 18 on Alpine for smaller image size
+FROM node:18-alpine
 
-# Install build dependencies for Sharp
-RUN apk add --no-cache python3 make g++ vips-dev
+# Install only runtime dependencies for Sharp (no build tools needed)
+RUN apk add --no-cache vips-dev
 
-WORKDIR /app
-
-# Copy package files
-COPY backend/package*.json ./backend/
-
-# Install dependencies
 WORKDIR /app/backend
-RUN npm ci
 
-# Copy backend source code
-COPY backend ./
+# Copy package files and .npmrc first for better caching
+COPY backend/package*.json ./
+COPY backend/.npmrc ./
+
+# Install ALL dependencies (we need devDependencies for TypeScript build)
+# Sharp will download pre-built binaries thanks to .npmrc configuration
+RUN npm install
+
+# Copy source code
+COPY backend/src ./src
+COPY backend/tsconfig.json ./
 
 # Build TypeScript
 RUN npm run build
 
-# Production stage
-FROM node:18-alpine
-
-# Install runtime dependencies for Sharp
-RUN apk add --no-cache vips
-
-WORKDIR /app
-
-# Copy package files
-COPY backend/package*.json ./backend/
-
-# Install production dependencies only
-WORKDIR /app/backend
-RUN npm ci --only=production
-
-# Copy built application from builder
-COPY --from=builder /app/backend/dist ./dist
+# Remove devDependencies to reduce image size
+RUN npm prune --production
 
 # Copy frontend files
 COPY frontend /app/frontend
 
-# Create storage directory
-RUN mkdir -p /app/backend/storage/original /app/backend/storage/processed /app/backend/storage/downloads
+# Create storage directories
+RUN mkdir -p storage/original storage/processed storage/downloads
 
 # Set environment
 ENV NODE_ENV=production
 
-WORKDIR /app/backend
-
 # Expose port
 EXPOSE 3000
 
-# Start application
+# Start the application
 CMD ["node", "dist/index.js"]

@@ -1,4 +1,4 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import { DataTypes, Model, Sequelize, Optional } from 'sequelize';
 import { ImageProcessingConfig } from '../types';
 
 export interface ServiceAttributes {
@@ -15,7 +15,9 @@ export interface ServiceAttributes {
   updatedAt?: Date;
 }
 
-export class Service extends Model<ServiceAttributes> implements ServiceAttributes {
+export interface ServiceCreationAttributes extends Optional<ServiceAttributes, 'id' | 'description' | 'publicUrlDuration' | 'outputFieldName' | 'createdAt' | 'updatedAt'> {}
+
+export class Service extends Model<ServiceAttributes, ServiceCreationAttributes> implements ServiceAttributes {
   public id!: string;
   public name!: string;
   public description?: string;

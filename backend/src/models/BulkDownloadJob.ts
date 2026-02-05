@@ -1,4 +1,4 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import { DataTypes, Model, Sequelize, Optional } from 'sequelize';
 
 export interface BulkDownloadJobAttributes {
   id: string;
@@ -12,7 +12,9 @@ export interface BulkDownloadJobAttributes {
   updatedAt?: Date;
 }
 
-export class BulkDownloadJob extends Model<BulkDownloadJobAttributes> implements BulkDownloadJobAttributes {
+export interface BulkDownloadJobCreationAttributes extends Optional<BulkDownloadJobAttributes, 'id' | 'serviceId' | 'zipPath' | 'downloadUrl' | 'error' | 'createdAt' | 'updatedAt'> {}
+
+export class BulkDownloadJob extends Model<BulkDownloadJobAttributes, BulkDownloadJobCreationAttributes> implements BulkDownloadJobAttributes {
   public id!: string;
   public serviceId?: string;
   public recordIds!: string[];

@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { FileHelper } from '../utils/fileHelper';
-import { ProcessedImage } from '../models';
+import { ProcessedImage } from '../models/ProcessedImage';
 import { config } from '../utils/config';
 
 export class DownloadService {

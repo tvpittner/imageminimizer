@@ -1,4 +1,4 @@
-import { DataTypes, Model, Sequelize } from 'sequelize';
+import { DataTypes, Model, Sequelize, Optional } from 'sequelize';
 
 export interface ProcessedImageAttributes {
   id: string;
@@ -18,7 +18,9 @@ export interface ProcessedImageAttributes {
   updatedAt?: Date;
 }
 
-export class ProcessedImage extends Model<ProcessedImageAttributes> implements ProcessedImageAttributes {
+export interface ProcessedImageCreationAttributes extends Optional<ProcessedImageAttributes, 'id' | 'error' | 'expiresAt' | 'createdAt' | 'updatedAt'> {}
+
+export class ProcessedImage extends Model<ProcessedImageAttributes, ProcessedImageCreationAttributes> implements ProcessedImageAttributes {
   public id!: string;
   public serviceId!: string;
   public recordId!: string;

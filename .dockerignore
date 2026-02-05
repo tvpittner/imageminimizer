@@ -1,0 +1,17 @@
+node_modules
+dist
+npm-debug.log
+.env
+.env.local
+.env.production
+.git
+.gitignore
+*.md
+backend/storage/original/*
+backend/storage/processed/*
+backend/storage/downloads/*
+!backend/storage/original/.gitkeep
+!backend/storage/processed/.gitkeep
+!backend/storage/downloads/.gitkeep
+.DS_Store
+airtable-script

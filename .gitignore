@@ -1,0 +1,44 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build output
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Storage (don't commit uploaded/processed files)
+backend/storage/original/*
+backend/storage/processed/*
+backend/storage/downloads/*
+!backend/storage/original/.gitkeep
+!backend/storage/processed/.gitkeep
+!backend/storage/downloads/.gitkeep
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+*.bak
+*.tmp

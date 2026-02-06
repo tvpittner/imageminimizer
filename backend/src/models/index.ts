@@ -43,7 +43,7 @@ export const initDatabase = async () => {
     console.log('✓ Database connection established');
 
     // Sync models (creates tables if they don't exist)
-    await sequelize.sync({ alter: process.env.NODE_ENV === 'development' });
+    await sequelize.sync({ alter: config.nodeEnv === 'development' });
     console.log('✓ Database models synchronized');
 
     return true;
